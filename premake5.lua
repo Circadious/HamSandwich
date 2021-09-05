@@ -419,6 +419,8 @@ project "mystic"
 	icon_file "mystic"
 	uses_ham()
 	pch "winpch"
+	appdata_name "Axiomatic-mystic-remix"
+	assetdirs "assets/mystic-remix"
 
 	installers {
 		{
