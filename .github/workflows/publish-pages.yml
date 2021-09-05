@@ -19,7 +19,7 @@ jobs:
       # To publish everything:
       #   ./tools/emscripten/distribute-web.sh
       - run: |
-          ./tools/emscripten/distribute-web.sh mystic loonyland supreme loonyland2 sleepless
+          ./tools/emscripten/distribute-web.sh mystic
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
