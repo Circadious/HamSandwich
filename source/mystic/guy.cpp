@@ -14,6 +14,8 @@ int lastSafeX,lastSafeY;
 //------------------------------------------------------------------------
 // CLASS GUY
 
+// Axiomatic edit: Altered AddBattleGuys to accommodate 12 monsters instead of 10 in monster attacks
+
 Guy::Guy(void)
 {
 	type=MONS_NONE;
@@ -1565,7 +1567,7 @@ void AddBattleGuys(Map *map,byte t)
 	Guy *g;
 	byte amt,me;
 
-	amt=MGL_random(10)+1;
+	amt=MGL_random(11)+2;
 
 	for(i=0;i<MAX_MAPMONS;i++)
 	{

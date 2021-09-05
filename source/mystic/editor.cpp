@@ -18,6 +18,9 @@
 #define MS_X (480)
 #define MS_Y (480)
 
+// Axiomatic edits: Added functionality to extend/shrink map size by single rows of tiles using shift+a,w,d,x
+// Also added plop type shortcuts with number keys
+
 static char lastKey=0;
 
 static MGLDraw *editmgl;
@@ -57,7 +60,6 @@ byte InitEditor(void)
 	musicPlaying=0;
 	lastKey=0;
 	InitPlayer(INIT_LEVEL,0,0);
-	StopSong();
 
 	return 1;
 }
@@ -67,7 +69,6 @@ void ExitEditor(void)
 	ExitGuys();
 	FreeWorld(&world);
 	PurgeMonsterSprites();
-	InitSound();
 }
 
 void ItemPickerClick(void)
@@ -1040,21 +1041,13 @@ void ShowSpecials(void)
 	if(!(editopt.displayFlags&MAP_SHOWSPECIALS))
 		return;
 
-	char spclNum[32];
-
 	GetCamera(&sx,&sy);
 	for(i=0;i<MAX_SPECIAL;i++)
 		if(curMap->special[i].trigger)
 		{
-			Print(
-				curMap->special[i].x * TILE_WIDTH + 2 - sx + 320,
-				curMap->special[i].y * TILE_HEIGHT + 1 - sy + 240,
-				"Spcl", 0, 1);
-			sprintf(spclNum, "%03d", i);
-			Print(
-				curMap->special[i].x * TILE_WIDTH + 2 - sx + 320,
-				curMap->special[i].y * TILE_HEIGHT + 12 - sy + 240,
-				spclNum, 0, 1);
+			Print(curMap->special[i].x*TILE_WIDTH+2-sx+320,
+				  curMap->special[i].y*TILE_HEIGHT+6-sy+240,
+				  "Spcl",0,1);
 		}
 }
 
@@ -1122,6 +1115,8 @@ void EditorDraw(void)
 
 	// draw the mouse cursor
 	DrawMouseCursor(mouseX,mouseY);
+
+	editmgl->Flip();
 }
 
 static void HandleKeyPresses(void)
@@ -1181,7 +1176,7 @@ static void HandleKeyPresses(void)
 				editMode=EDITMODE_FILE;
 				InitFileDialog();
 				break;
-			case 'm':
+			case 'w':
 				editMode=EDITMODE_MAPMENU;
 				InitMapDialog(&world,curMapNum);
 				break;
@@ -1245,6 +1240,45 @@ static void HandleKeyPresses(void)
 				editopt.curBadguy++;
 				if(editopt.curBadguy>=NUM_MONSTERS)
 					editopt.curBadguy=1;
+				break;
+			case 'A':
+				curMap->Resize(curMap->width-1,curMap->height);
+				break;
+			case 'D':
+				curMap->Resize(curMap->width+1,curMap->height);
+				break;
+			case 'W':
+				curMap->Resize(curMap->width,curMap->height-1);
+				break;
+			case 'X':
+				curMap->Resize(curMap->width,curMap->height+1);
+				break;
+			case '1':
+				editopt.plopMode=0;
+				break;
+			case '2':
+				editopt.plopMode=1;
+				break;
+			case '3':
+				editopt.plopMode=2;
+				break;
+			case '4':
+				editopt.plopMode=3;
+				break;
+			case '5':
+				editopt.plopMode=4;
+				break;
+			case '6':
+				editopt.plopMode=5;
+				break;
+			case '7':
+				editopt.plopMode=6;
+				break;
+			case '8':
+				editopt.plopMode=7;
+				break;
+			case '9':
+				editopt.plopMode=8;
 				break;
 			case 8:
 				Delete(tileX,tileY);
@@ -1311,7 +1345,7 @@ static void HandleKeyPresses(void)
 	}
 }
 
-TASK(byte) LunaticEditor(MGLDraw *mgl)
+byte LunaticEditor(MGLDraw *mgl)
 {
 	int lastTime=1;
 	byte exitcode=0;
@@ -1319,7 +1353,7 @@ TASK(byte) LunaticEditor(MGLDraw *mgl)
 	editmgl=mgl;
 
 	if(!InitEditor())
-		CO_RETURN QUITGAME;
+		return QUITGAME;
 
 	exitcode=CONTINUE;
 	while(exitcode==CONTINUE)
@@ -1329,10 +1363,7 @@ TASK(byte) LunaticEditor(MGLDraw *mgl)
 		HandleKeyPresses();
 		exitcode=EditorRun(&lastTime);
 		if(numRunsToMakeUp>0)
-		{
 			EditorDraw();
-			AWAIT editmgl->Flip();
-		}
 
 		if(lastKey==27)
 			exitcode=QUITGAME;
@@ -1343,7 +1374,7 @@ TASK(byte) LunaticEditor(MGLDraw *mgl)
 	}
 
 	ExitEditor();
-	CO_RETURN exitcode;
+	return exitcode;
 }
 
 void EditorNewWorld(void)

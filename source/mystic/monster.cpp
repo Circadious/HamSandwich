@@ -4,8 +4,11 @@
 #include "spell.h"
 #include "water.h"
 
+// Axiomatic edit: Increased XP gains on all aquatic enemies because they don't drop coins
+
 monsterType_t monsType[NUM_MONSTERS]=
-	{
+	{  // Variable meaning, in order: Movement(?), Sprite data(?),
+									// Monster Life, Monster XP
 		{"Null",
 		 0,0,0,0,"",0},
 		{"Kid Mystic",
@@ -93,7 +96,7 @@ monsterType_t monsType[NUM_MONSTERS]=
 				{47,48,49,48,47,0,47,48,49,48,47,255},	// (A3) angry, spotted Bouapha
 			}},
 		{"Aquazoid",
-		 15,20,15,75,"graphics/serpent.jsp",0,MF_AQUATIC|MF_WATERWALK,
+		 15,20,15,150,"graphics/serpent.jsp",0,MF_AQUATIC|MF_WATERWALK,
 			{
 				{0,255},	// idle
 				{1,2,3,2,1,0,255},	// move
@@ -202,7 +205,7 @@ monsterType_t monsType[NUM_MONSTERS]=
 				{22,23,24,25,26,27,28,255},	// die
 			}},
 		{"Magmazoid",
-		 15,20,20,80,"graphics/magmazoid.jsp",0,MF_AQUATIC|MF_WATERWALK,
+		 15,20,20,200,"graphics/magmazoid.jsp",0,MF_AQUATIC|MF_WATERWALK,
 			{
 				{0,255},	// idle
 				{1,2,3,2,1,0,255},	// move
@@ -305,7 +308,7 @@ monsterType_t monsType[NUM_MONSTERS]=
 				{5,6,7,255},	// die
 			}},
 		{"Octon",
-		 19,21,20,40,"graphics/octopus.jsp",0,MF_AQUATIC|MF_WATERWALK,
+		 19,21,20,100,"graphics/octopus.jsp",0,MF_AQUATIC|MF_WATERWALK,
 			{
 				{5,6,7,6,255},	// idle
 				{5,6,6,7,6,6,255},	// move
@@ -458,7 +461,7 @@ monsterType_t monsType[NUM_MONSTERS]=
 				{0,255},	// die
 			}},
 		{"Optimum Octon",
-		 90,15,200,300,"graphics/octoboss.jsp",0,MF_ONEFACE|MF_NOMOVE|MF_AQUATIC|MF_WATERWALK|MF_ENEMYWALK,
+		 90,15,200,1000,"graphics/octoboss.jsp",0,MF_ONEFACE|MF_NOMOVE|MF_AQUATIC|MF_WATERWALK|MF_ENEMYWALK,
 			{
 				{0,255},	// idle
 				{0,255},	// move
@@ -466,7 +469,7 @@ monsterType_t monsType[NUM_MONSTERS]=
 				{1,2,3,4,5,6,7,8,9,255},	// die
 			}},
 		{"Octentacle",
-		 20,11,20,50,"graphics/octotent.jsp",0,MF_NOMOVE|MF_AQUATIC|MF_WATERWALK|MF_ENEMYWALK,
+		 20,11,20,75,"graphics/octotent.jsp",0,MF_NOMOVE|MF_AQUATIC|MF_WATERWALK|MF_ENEMYWALK,
 			{
 				{1,255},	// idle
 				{0,255},	// move
@@ -2886,6 +2889,7 @@ void AI_TheThing(Guy *me,Map *map,world_t *world,Guy *goodguy)
 			me->y+=((1-MGL_random(3))<<FIXSHIFT);
 			if(me->frm==14 && me->frmTimer<32)
 			{
+				ShowVictoryAnim(0);	// you killed the final boss
 				SendMessageToGame(MSG_WINGAME,0);
 			}
 		}

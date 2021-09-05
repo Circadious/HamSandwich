@@ -110,7 +110,7 @@ class Map
 		byte FindGuy(int x,int y,byte size,Guy *g);
 		byte FindGuy2(int x,int y,byte size,Guy *g);
 		void SewerTrick(int x,int y);
-
+		void Resize(int wid,int hei);
 		void SmoothLight(int x,int y);
 		void SmoothLights(void);
 

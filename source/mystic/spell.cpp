@@ -10,15 +10,17 @@
 #include "fairy.h"
 #include "challenge.h"
 
+// Axiomatic edit: Spell costs, energy barrage number scales with level
+
 byte spellCost[20]={
 	1,2,	// Energy Barrage/Storm
 	2,15,	// Dragon's Flame/Liquify
 	7,10,	// Seeker Bolt/Barrage
-	10,12,	// Ice Blast/Beam
+	5,12,	// Ice Blast 10/Beam
 	25,35,	// Inferno/Hyper Inferno
-	20,30,	// Summon
+	10,30,	// Ptero 20/Golem
 	30,40,	// Stoneskin/Steelskin
-	30,45,	// Berserk/Rage
+	15,25,	// Berserk 30/Rage 45
 	20,40,	// Healing/Megahealing
 	128,128,	// Armageddon
 };
@@ -68,6 +70,7 @@ void CastSpell(Guy *me)
 	byte c;
 	byte cost;
 	int i,j;
+	static byte flameFlip=0;
 	Guy *g;
 
 	if(player.life==0)
@@ -107,17 +110,23 @@ void CastSpell(Guy *me)
 		player.life--;
 	}
 
+// SPELL DATA LOCATED HERE!
+
 	switch(player.casting)
 	{
 		case 0:	// energy barrage/storm
 			if(player.spell[0]==1)
 			{
 				FireBullet(me->x,me->y,me->facing,BLT_LASER);
-				if(SpellLevel()>35)
+				
+				// Will fire additional projectiles upon leveling up
+				if((rand() % 50-10) < SpellLevel())
 					FireBullet(me->x,me->y,me->facing,BLT_LASER);
 			}
 			else	// storm - shoot 8-ish ways
 			{
+				// Will now fire an additional projectile forward
+				FireBullet(me->x,me->y,me->facing,BLT_LASER);
 				for(i=0;i<8;i++)
 				{
 					j=i*32-32+MGL_random(64);
@@ -153,6 +162,7 @@ void CastSpell(Guy *me)
 			else
 			{
 				player.wpnReload=5;
+				flameFlip=0;
 			}
 			DoPlayerFacing(c,me);
 			break;

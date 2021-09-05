@@ -6,6 +6,8 @@
 #include "water.h"
 #include "challenge.h"
 
+// Axiomatic edits: Changed dimension of the bridge at end of chapter 1
+
 int totalBrains;
 static world_t *world;
 byte brainX,brainY;
@@ -211,6 +213,39 @@ void Map::Init(world_t *wrld)
 		AddMapGuys(this);
 	else
 		AddBattleGuys(this,i);
+}
+
+void Map::Resize(int wid,int hei)
+{
+	mapTile_t *map2;
+	int i,j;
+
+	map2=(mapTile_t *)calloc(sizeof(mapTile_t)*wid*hei,1);
+
+	for(i=0;i<width;i++)
+		for(j=0;j<height;j++)
+		{
+			if(i<wid && j<hei)
+				map2[i+j*wid]=map[i+j*width];
+		}
+	free(map);
+	map=map2;
+	width=wid;
+	height=hei;
+
+	for(i=0;i<MAX_MAPMONS;i++)
+	{
+		if(badguy[i].x>=wid || badguy[i].y>=hei)
+			badguy[i].type=0;
+	}
+	for(i=0;i<MAX_SPECIAL;i++)
+	{
+		if(special[i].x>=wid || special[i].y>=hei)
+			special[i].trigger=0;
+	}
+	ExitGuys();
+	InitGuys(MAX_MAPMONS);
+	AddMapGuys(this);
 }
 
 void Map::SmoothLight(int x,int y)
@@ -2025,10 +2060,10 @@ void OctoBossDeath(Map *map)
 {
 	int i,j;
 
-	for(j=32;j<=50;j++)
+	for(j=24;j<=38;j++)
 		for(i=27;i<=38;i++)
 		{
-			map->map[i+j*map->width].floor=map->map[i+51*map->width].floor;
+			map->map[i+j*map->width].floor=map->map[i+39*map->width].floor;
 		}
 	NewMessage("Weird, the bridge came back!",60);
 }
