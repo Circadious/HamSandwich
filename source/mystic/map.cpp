@@ -6,8 +6,6 @@
 #include "water.h"
 #include "challenge.h"
 
-// Axiomatic edits: Changed dimension of the bridge at end of chapter 1
-
 int totalBrains;
 static world_t *world;
 byte brainX,brainY;
