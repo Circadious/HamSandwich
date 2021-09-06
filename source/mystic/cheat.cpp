@@ -1,24 +1,21 @@
 #include "cheat.h"
 #include "challenge.h"
-#define CHEAT
 #ifdef CHEAT
 #define NUM_CHEATS 17
 #else
 #define NUM_CHEATS 9
 #endif
 
-// Note to self: Revert kaboooom and damedinero change
-
 char cheatCode[NUM_CHEATS][16]={
 	"iamawinner",		// auto-win the level
 	"plopplopfizfiz",	// max hammer up
-	"ka",			// super nuke attack
+	"kaboooom",			// super nuke attack
 	"staypuft",			// all keys
 	"mashmash",			// full health
 	"rocknroll",		// shield
 	"liquefaction",		// waterwalk
 	"rutabaga",			// gain a level
-	"da",		// free money
+	"damedinero",		// free money
 #ifdef CHEAT
 	/* THE REST ARE TEMP CHEATS!! */
 	"one",				// all type 1 spells

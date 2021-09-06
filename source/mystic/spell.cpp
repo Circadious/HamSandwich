@@ -10,17 +10,15 @@
 #include "fairy.h"
 #include "challenge.h"
 
-// Axiomatic edit: Spell costs, energy barrage number scales with level
-
 byte spellCost[20]={
 	1,2,	// Energy Barrage/Storm
 	2,15,	// Dragon's Flame/Liquify
 	7,10,	// Seeker Bolt/Barrage
-	5,12,	// Ice Blast 10/Beam
+	5,12,	// Ice Blast/Beam
 	25,35,	// Inferno/Hyper Inferno
-	10,30,	// Ptero 20/Golem
+	10,30,	// Ptero/Golem
 	30,40,	// Stoneskin/Steelskin
-	15,25,	// Berserk 30/Rage 45
+	15,30,	// Berserk/Rage
 	20,40,	// Healing/Megahealing
 	128,128,	// Armageddon
 };
@@ -70,7 +68,6 @@ void CastSpell(Guy *me)
 	byte c;
 	byte cost;
 	int i,j;
-	static byte flameFlip=0;
 	Guy *g;
 
 	if(player.life==0)
@@ -162,7 +159,6 @@ void CastSpell(Guy *me)
 			else
 			{
 				player.wpnReload=5;
-				flameFlip=0;
 			}
 			DoPlayerFacing(c,me);
 			break;

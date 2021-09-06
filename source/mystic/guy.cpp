@@ -14,8 +14,6 @@ int lastSafeX,lastSafeY;
 //------------------------------------------------------------------------
 // CLASS GUY
 
-// Axiomatic edit: Altered AddBattleGuys to accommodate 12 monsters instead of 10 in monster attacks
-
 Guy::Guy(void)
 {
 	type=MONS_NONE;
